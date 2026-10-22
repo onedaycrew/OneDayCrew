@@ -1,0 +1,111 @@
+(() => {
+  const root = document.documentElement;
+  const body = document.body;
+  const themeToggle = document.getElementById('themeToggle');
+  const menu = document.getElementById('menuScreen');
+  const menuToggle = document.getElementById('menuToggle');
+  const contact = document.getElementById('contactOverlay');
+  const project = document.getElementById('projectOverlay');
+  const videoOverlay = document.getElementById('videoOverlay');
+  const modalVideo = document.getElementById('modalVideo');
+  let lastFocus = null;
+  const projectData = [
+    {no:'ODC / CONCEPT STUDY 01',title:'Butterly — made to crave.',category:'IDENTITY / FOOD / CONTENT',image:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=1800&q=90',copy:'An appetite-first creative world for a bakery: warm art direction, tactile packaging cues, product photography and content made to stop the scroll.',deliverables:'Identity direction · Packaging concepts · Product photography · Social content',tag:'A concept direction, inspired by the bakery world — not a commissioned client case study.'},
+    {no:'ODC / CONCEPT STUDY 02',title:'Sound check — feel the room.',category:'CAMPAIGN / CULTURE / SOCIAL',image:'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1800&q=90',copy:'A high-energy campaign direction built around the moment before the lights go down: human energy, graphic rhythm and content designed to live past event night.',deliverables:'Campaign concept · Key visuals · Event film · Social cutdowns',tag:'An illustrative campaign concept. No external client or results are being claimed.'},
+    {no:'ODC / CONCEPT STUDY 03',title:'Wear the feeling — move your way.',category:'ART DIRECTION / FILM / PHOTO',image:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1800&q=90',copy:'A fashion-film direction where styling, movement, light and pace do the talking. Built to translate into a hero film, portraits and shorter edits.',deliverables:'Art direction · Film treatment · Editorial photography · Short-form edits',tag:'A visual direction study, not a published client commission.'},
+    {no:'ODC / CONCEPT STUDY 04',title:'Object of desire — own the shelf.',category:'BRAND WORLD / PRODUCT / DIGITAL',image:'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=1800&q=90',copy:'A product-led visual identity built around bold light, tactile materials and an ownable graphic world that can stretch from a product shot to a landing page.',deliverables:'Brand direction · Product photography · Digital art direction · Campaign assets',tag:'A concept study to show a possible creative approach, not a client case study.'}
+  ];
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  function setTheme(mode) {
+    root.dataset.theme = mode;
+    try { localStorage.setItem('odc-theme', mode); } catch (_) {}
+    const dark = mode === 'dark';
+    themeToggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    themeToggle.querySelector('.theme-symbol').textContent = dark ? '☼' : '◐';
+    themeToggle.querySelector('.theme-text').textContent = dark ? 'LIGHT SIDE' : 'DARK SIDE';
+    if (themeMeta) themeMeta.content = dark ? '#171525' : '#f5eee4';
+  }
+  try { const saved = localStorage.getItem('odc-theme'); if (saved === 'dark' || saved === 'light') setTheme(saved); } catch (_) {}
+  themeToggle.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+  function closeMenu() { menu.classList.remove('is-open'); menu.setAttribute('aria-hidden','true'); menuToggle.setAttribute('aria-expanded','false'); menuToggle.setAttribute('aria-label','Open menu'); if (!anyOverlayOpen()) body.classList.remove('lock-scroll'); }
+  function openMenu() { closeOverlays(); lastFocus = document.activeElement; menu.classList.add('is-open'); menu.setAttribute('aria-hidden','false'); menuToggle.setAttribute('aria-expanded','true'); menuToggle.setAttribute('aria-label','Close menu'); body.classList.add('lock-scroll'); document.getElementById('menuClose').focus(); }
+  menuToggle.addEventListener('click', () => menu.classList.contains('is-open') ? closeMenu() : openMenu());
+  document.getElementById('menuClose').addEventListener('click', closeMenu);
+  menu.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', closeMenu));
+  function anyOverlayOpen(){ return [menu,contact,project,videoOverlay].some(el=>el.classList.contains('is-open')); }
+  function closeOverlays(){ closeMenu(); closeContact(false); closeProject(false); closeVideo(false); }
+
+  function openContact(service='') {
+    closeOverlays(); lastFocus = document.activeElement;
+    contact.classList.add('is-open'); contact.setAttribute('aria-hidden','false'); body.classList.add('lock-scroll');
+    const select = document.getElementById('yourProject');
+    if (service) {
+      const match = [...select.options].find(o => o.text.toLowerCase() === service.toLowerCase());
+      if (match) select.value = match.value;
+      else if (/film|photo/i.test(service)) select.value = 'Film and photography';
+      else if (/identity|brand/i.test(service)) select.value = 'Brand identity';
+      else if (/social|content/i.test(service)) select.value = 'Social and content';
+      else if (/website|digital/i.test(service)) select.value = 'Websites and digital';
+      else if (/campaign|growth/i.test(service)) select.value = 'Campaigns and growth';
+    }
+    setTimeout(() => document.getElementById('yourName').focus(), 120);
+  }
+  function closeContact(restore=true) { contact.classList.remove('is-open'); contact.setAttribute('aria-hidden','true'); if (!anyOverlayOpen()) body.classList.remove('lock-scroll'); if (restore && lastFocus?.focus) lastFocus.focus(); }
+  document.querySelectorAll('[data-contact]').forEach(btn=>btn.addEventListener('click',()=>openContact()));
+  document.querySelectorAll('[data-service]').forEach(btn=>btn.addEventListener('click',()=>openContact(btn.dataset.service)));
+  document.getElementById('contactClose').addEventListener('click',()=>closeContact());
+  document.getElementById('contactBackdrop').addEventListener('click',()=>closeContact());
+
+  function openProject(index){const p=projectData[Number(index)]; if(!p)return; closeOverlays(); lastFocus=document.activeElement;
+    document.getElementById('projectDetail').innerHTML=`<span class="micro">${p.no}</span><h2 id="projectTitle">${p.title}</h2><div class="project-category">${p.category}</div><img class="project-visual" src="${p.image}" alt="Visual direction for ${p.title}"><div class="project-columns"><p>${p.copy}</p><p><strong>Possible outputs</strong><br>${p.deliverables}</p></div><p class="project-disclaimer">${p.tag}</p><button class="pill-button red-button" id="projectStart">BUILD SOMETHING LIKE THIS <span>↗</span></button>`;
+    project.classList.add('is-open');project.setAttribute('aria-hidden','false');body.classList.add('lock-scroll');document.getElementById('projectStart').addEventListener('click',()=>{closeProject(false);openContact(p.category.split('/')[0].trim())});document.getElementById('projectClose').focus(); }
+  function closeProject(restore=true){project.classList.remove('is-open');project.setAttribute('aria-hidden','true');if(!anyOverlayOpen())body.classList.remove('lock-scroll');if(restore&&lastFocus?.focus)lastFocus.focus();}
+  document.getElementById('projectClose').addEventListener('click',()=>closeProject());
+  project.addEventListener('click',e=>{if(e.target===project)closeProject()});
+  document.querySelectorAll('[data-project]').forEach(card=>{card.addEventListener('click',()=>openProject(card.dataset.project));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openProject(card.dataset.project)}})});
+  document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b===btn));const f=btn.dataset.filter;document.querySelectorAll('.work-card').forEach((card,i)=>{const show=f==='all'||card.dataset.category===f;card.hidden=!show;if(show){card.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'translateY(0)'}],{duration:350,delay:i*35,easing:'ease-out'});}})}));
+
+  const reelFrame = document.getElementById('reelFrame');
+  function openVideo(){closeOverlays();lastFocus=document.activeElement;videoOverlay.classList.add('is-open');videoOverlay.setAttribute('aria-hidden','false');body.classList.add('lock-scroll');modalVideo.load();modalVideo.play().catch(()=>{});document.getElementById('videoClose').focus();}
+  function closeVideo(restore=true){modalVideo.pause();videoOverlay.classList.remove('is-open');videoOverlay.setAttribute('aria-hidden','true');if(!anyOverlayOpen())body.classList.remove('lock-scroll');if(restore&&lastFocus?.focus)lastFocus.focus();}
+  reelFrame.addEventListener('click',openVideo);reelFrame.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openVideo()}});document.getElementById('videoClose').addEventListener('click',()=>closeVideo());videoOverlay.addEventListener('click',e=>{if(e.target===videoOverlay)closeVideo()});
+
+  document.getElementById('briefForm').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('yourName').value.trim();const contactValue=document.getElementById('yourContact').value.trim();const service=document.getElementById('yourProject').value;const idea=document.getElementById('yourIdea').value.trim();const subject=encodeURIComponent(`One Day Crew enquiry — ${service}`);const bodyText=encodeURIComponent(`Hi One Day Crew,\n\nI'm ${name}.\nMy email or phone: ${contactValue}\nWhat I'm looking for: ${service}\n\nThe idea:\n${idea||'I would like to discuss an idea.'}\n\nSent from the One Day Crew website.`);const inbox='hello@replace-this-inbox.com';document.getElementById('formNote').textContent='Your email draft is being prepared. Replace hello@replace-this-inbox.com in script.js with your real inbox before launch.';window.location.href=`mailto:${inbox}?subject=${subject}&body=${bodyText}`;});
+  document.getElementById('backToTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  document.getElementById('year').textContent=new Date().getFullYear();
+  // ODC easter egg: press the number 1 to toggle a site-wide text glitch.
+  // Ignore keystrokes while the visitor is typing into a form or editable field.
+  let glitchMode = false;
+  const textGlitchTargets = [...document.querySelectorAll('body *')].filter(el => {
+    if (['SCRIPT','STYLE','NOSCRIPT','SVG','PATH','VIDEO','IMG','INPUT','TEXTAREA','SELECT','OPTION'].includes(el.tagName)) return false;
+    if (el.closest('svg,video,audio,canvas,iframe, input, textarea, select, [contenteditable="true"]')) return false;
+    return [...el.childNodes].some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+  });
+  function setGlitchMode(enabled) {
+    glitchMode = enabled;
+    body.classList.toggle('odc-glitch-mode', enabled);
+    textGlitchTargets.forEach((el, index) => {
+      if (enabled) {
+        el.classList.add('odc-glitch-text');
+        el.style.setProperty('--glitch-delay', `${(index % 9) * 37}ms`);
+      } else {
+        el.classList.remove('odc-glitch-text');
+        el.style.removeProperty('--glitch-delay');
+      }
+    });
+    root.dataset.glitch = enabled ? 'on' : 'off';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === '1' && !e.repeat && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      const target = e.target;
+      if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
+      e.preventDefault();
+      setGlitchMode(!glitchMode);
+    }
+    if(e.key==='Escape'){if(videoOverlay.classList.contains('is-open'))closeVideo();else if(project.classList.contains('is-open'))closeProject();else if(contact.classList.contains('is-open'))closeContact();else if(menu.classList.contains('is-open'))closeMenu();}
+  });
+  const revealTargets=document.querySelectorAll('.section-tag,.manifesto-grid,.manifesto-ribbon,.reel-head,.reel-frame-wrap,.film-strip,.work-heading,.work-card,.work-bottom,.services-top,.service-row,.services-foot,.how-heading,.crew-steps article,.cta-inner');
+  revealTargets.forEach(el=>el.classList.add('reveal'));
+  if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.08,rootMargin:'0px 0px -30px 0px'});revealTargets.forEach(el=>observer.observe(el));}else revealTargets.forEach(el=>el.classList.add('is-visible'));
+})();
