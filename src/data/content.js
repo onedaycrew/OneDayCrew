@@ -6,6 +6,8 @@ export const SITE_META = {
   liveStatus: "INDEPENDENT CREATIVE CREW",
   copyrightNotice: "ONE DAY CREW. MADE TOGETHER.",
   inbox: "hello@onedaycrew.studio",
+  careersForm: "https://docs.google.com/forms/d/e/1FAIpQLSfhki7R8U__7yz_LO0PWDU7P_cj45kENENv3xXga0VUbriX7Q/viewform",
+  internshipsForm: "https://docs.google.com/forms/d/e/1FAIpQLSc6q9TdExM9jao2FS8LVzHC_VIisvm8a4RJZydQra405MvjZw/viewform",
 };
 
 export const CLIENT_PARTNERS = [

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Check, MessageSquare, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, MessageSquare, ArrowRight, ShieldCheck } from 'lucide-react';
 import { saveLead } from '../../lib/supabaseClient';
 
 const WHATSAPP_NUMBER = '919353736101';
@@ -15,7 +15,6 @@ export default function ContactDrawer({
     phone: '',
     service: 'Websites'
   });
-  const [copied, setCopied] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const nameInputRef = useRef(null);
 
@@ -94,11 +93,19 @@ export default function ContactDrawer({
     onClose();
   };
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText('hello@onedaycrew.studio');
-    setCopied(true);
-    onSuccessToast?.('Email copied: hello@onedaycrew.studio');
-    setTimeout(() => setCopied(false), 2500);
+  const handleMailClick = () => {
+    const subject = encodeURIComponent(
+      `Project Enquiry — ${formData.service || 'Creative Work'}${formData.name ? ` (${formData.name})` : ''}`
+    );
+    const body = encodeURIComponent(
+      `Hi One Day Crew,\n\n` +
+      `I'd like to discuss a project with your team.\n\n` +
+      `Name: ${formData.name || '[Your Name]'}\n` +
+      `Phone: ${formData.phone || '[Your Phone/WhatsApp]'}\n` +
+      `Service: ${formData.service || 'Websites & Web Apps'}\n\n` +
+      `Looking forward to hearing from you!`
+    );
+    window.location.href = `mailto:hello@onedaycrew.studio?subject=${subject}&body=${body}`;
   };
 
   if (!isOpen) return null;
@@ -155,7 +162,7 @@ export default function ContactDrawer({
             </span>
             <span className="wa-text-col">
               <b>Skip the form — Chat instantly on WhatsApp</b>
-              <small>Average reply time: under 15 mins</small>
+              <small>Average reply time: Instant !!!</small>
             </span>
             <ArrowRight size={16} className="wa-arrow" />
           </button>
@@ -228,17 +235,17 @@ export default function ContactDrawer({
             </div>
           </form>
 
-          {/* Quick Copy Contact Bar */}
+          {/* Quick Direct Email Link */}
           <div className="direct-email-card" style={{ marginTop: '24px' }}>
             <span>Prefer email? Direct studio inbox:</span>
             <button 
               type="button" 
               className="copy-email-btn"
-              onClick={handleCopyEmail}
-              title="Click to copy email address"
+              onClick={handleMailClick}
+              title="Click to send email"
             >
               <code>hello@onedaycrew.studio</code>
-              {copied ? <Check size={14} className="copied-icon" /> : <Copy size={14} />}
+              <Mail size={14} />
             </button>
           </div>
         </div>

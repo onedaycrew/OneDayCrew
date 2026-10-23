@@ -1,6 +1,11 @@
 import React from 'react';
+import { SITE_META } from '../data/content';
 
 export default function Careers({ onOpenContact }) {
+  const handleOpenForm = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <section className="careers-section section-pad" id="careers">
       <div className="section-tag">
@@ -34,17 +39,19 @@ export default function Careers({ onOpenContact }) {
                 <span className="opportunity-badge">ROLE / 01</span>
                 <h3 className="opportunity-title">Careers</h3>
                 <p className="opportunity-desc">
-                  Interested in working with the crew? Introduce yourself through the enquiry form.
+                  Interested in working with the crew? Introduce yourself and share your proof of work.
                 </p>
               </div>
-              <button 
-                type="button" 
+              <a 
+                href={SITE_META.careersForm}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="opportunity-action-btn"
-                onClick={() => onOpenContact('Careers / Work with the Crew')}
+                style={{ textDecoration: 'none' }}
               >
-                <span>Careers</span>
+                <span>Apply for Careers</span>
                 <span className="opportunity-arrow">↗</span>
-              </button>
+              </a>
             </article>
 
             <article className="opportunity-card">
@@ -52,17 +59,19 @@ export default function Careers({ onOpenContact }) {
                 <span className="opportunity-badge">ROLE / 02</span>
                 <h3 className="opportunity-title">Internships</h3>
                 <p className="opportunity-desc">
-                  Starting out and want to say hello? Tell us what you're learning and making.
+                  Starting out and want to say hello? Tell us what you're learning, building, and exploring.
                 </p>
               </div>
-              <button 
-                type="button" 
+              <a 
+                href={SITE_META.internshipsForm}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="opportunity-action-btn"
-                onClick={() => onOpenContact('Internships / Say Hello')}
+                style={{ textDecoration: 'none' }}
               >
-                <span>Internships</span>
+                <span>Apply for Internship</span>
                 <span className="opportunity-arrow">↗</span>
-              </button>
+              </a>
             </article>
           </div>
         </div>
