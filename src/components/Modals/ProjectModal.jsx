@@ -176,6 +176,73 @@ export default function ProjectModal({ project, onClose, onOpenContact, onSelect
           </div>
         )}
 
+        {/* Proof of Work Reel section if project has videoUrl */}
+        {project.videoUrl && (
+          <div className="project-proof-reel-banner">
+            <div className="proof-reel-header">
+              <span className="live-dot pulse"></span>
+              <strong>AUTHENTIC PROOF OF WORK: ON-SET FOOTAGE (9:16 REEL)</strong>
+            </div>
+            <div className="proof-reel-layout">
+              <div className="proof-reel-phone-wrapper">
+                <video 
+                  src={project.videoUrl} 
+                  controls 
+                  playsInline 
+                  autoPlay 
+                  muted 
+                  loop 
+                  className="proof-reel-phone-video"
+                />
+              </div>
+              <div className="proof-reel-details">
+                <span className="micro">FIVE DEPARTMENTS IN ACTION</span>
+                <h3>Behind the Scenes with {project.title.split('—')[0].trim()}</h3>
+                <p>
+                  No mockups, no stock footage. Real craft executed by our 5 specialized departments:
+                </p>
+                <div className="proof-depts-grid">
+                  <div className="proof-dept-item">
+                    <span className="p-num">01</span>
+                    <div>
+                      <strong>Graphic Design</strong>
+                      <p>Visual identity, custom packaging cues &amp; typography</p>
+                    </div>
+                  </div>
+                  <div className="proof-dept-item">
+                    <span className="p-num">02</span>
+                    <div>
+                      <strong>Photo &amp; Videography</strong>
+                      <p>High-end appetite photography, on-set direction &amp; reel cuts</p>
+                    </div>
+                  </div>
+                  <div className="proof-dept-item">
+                    <span className="p-num">03</span>
+                    <div>
+                      <strong>Social Media &amp; Digital</strong>
+                      <p>Community hype, launch teaser assets &amp; content scheduling</p>
+                    </div>
+                  </div>
+                  <div className="proof-dept-item">
+                    <span className="p-num">04</span>
+                    <div>
+                      <strong>Websites &amp; Platforms</strong>
+                      <p>Interactive ordering web experience &amp; micro-interactions</p>
+                    </div>
+                  </div>
+                  <div className="proof-dept-item">
+                    <span className="p-num">05</span>
+                    <div>
+                      <strong>Sales &amp; Growth Funnel</strong>
+                      <p>Direct-to-consumer conversion mechanics and traction</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="project-columns">
           <div>
             <p className="project-copy-main">{project.copy}</p>

@@ -73,11 +73,17 @@ export default function WorkShowcase({ onSelectProject, onOpenContact }) {
               
               {/* Unique card overlays matching brand character */}
               {project.id === 'butterly' && (
-                <div className="butterly-overlay">
-                  <span>FRESH FROM<br />THE FEELING.</span>
-                  <b>BUTTER<br />BETTER.</b>
-                  <i>✳</i>
-                </div>
+                <>
+                  <div className="butterly-overlay">
+                    <span>FRESH FROM<br />THE FEELING.</span>
+                    <b>BUTTER<br />BETTER.</b>
+                    <i>✳</i>
+                  </div>
+                  <div className="card-reel-indicator">
+                    <span className="live-dot pulse"></span>
+                    <span>PROOF REEL ATTACHED (9:16)</span>
+                  </div>
+                </>
               )}
 
               {project.id === 'blue-peak' && (

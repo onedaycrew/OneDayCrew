@@ -16,6 +16,8 @@ import MenuModal from './components/Modals/MenuModal';
 import ProjectModal from './components/Modals/ProjectModal';
 import VideoModal from './components/Modals/VideoModal';
 import ContactDrawer from './components/Modals/ContactDrawer';
+import FloatingReelWidget from './components/FloatingReelWidget';
+import { PROJECTS } from './data/content';
 
 import Toast from './components/UI/Toast';
 

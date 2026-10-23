@@ -10,20 +10,25 @@ export default function Manifesto({ onOpenContact }) {
       </div>
 
       <div className="manifesto-grid">
-        <h2>
-          NOT EVERY<br />
-          ONE DAY<br />
-          <span>LOOKS THE</span><br />
-          <i>SAME.</i>
-        </h2>
+        <div className="manifesto-head-col">
+          <h2>
+            NOT EVERY<br />
+            ONE DAY<br />
+            <span>LOOKS THE</span><br />
+            <i>SAME.</i>
+          </h2>
+          <span className="manifesto-heading-star" aria-hidden="true">✳</span>
+        </div>
 
-        <div className="manifesto-right">
+        <div className="manifesto-center-stamp">
           <div className="orbit-stamp">
             ODC<br />
             <span>✳</span>
             <small>EST. FOR<br />WHAT'S NEXT</small>
           </div>
+        </div>
 
+        <div className="manifesto-right">
           <p className="manifesto-lead">
             For some, it's opening the doors. For others, it's finally putting the work out there.
           </p>

@@ -44,6 +44,7 @@ export const PROJECTS = [
     filterKey: "client",
     badgeText: "ACTIVE CLIENT",
     externalUrl: "https://www.butterlybakery.com/",
+    videoUrl: "/video 01.webm",
     heroImage: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1800&q=90",
     gallery: [
       "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1800&q=90",

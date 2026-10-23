@@ -116,15 +116,19 @@ export default function Hero({ onOpenContact }) {
             </figcaption>
           </figure>
 
-          <figure className="photo-card photo-two">
-            <img 
-              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=85" 
-              alt="Atmospheric warm cinematic photography capturing emotion" 
-              loading="eager"
+          <figure className="photo-card photo-two photo-video-card">
+            <video 
+              src="/video 01.webm" 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              className="hero-reel-video"
+              title="Proof of Work: Butterly Bakery"
             />
             <figcaption>
-              <span>02 / THE FEELING</span>
-              <b>MAKE PEOPLE FEEL IT.</b>
+              <span>02 / THE PROOF</span>
+              <b>BUTTERLY BAKERY / ON SET</b>
             </figcaption>
           </figure>
 
@@ -141,7 +145,6 @@ export default function Hero({ onOpenContact }) {
           </div>
 
           <div className="hero-number" aria-hidden="true">01</div>
-          <div className="collage-caption micro">A LITTLE BIT OF EVERYTHING. ALL IN IT TOGETHER.</div>
         </div>
       </div>
 
